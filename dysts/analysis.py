@@ -13,7 +13,7 @@ from .utils import standardize_ts
 
 
 def sample_initial_conditions(
-    model, points_to_sample, traj_length=1000, pts_per_period=30
+    model, points_to_sample, traj_length=1000, pts_per_period=30, seed=42
 ):
     """
     Generate a random sample of initial conditions from a dynamical system
@@ -31,7 +31,8 @@ def sample_initial_conditions(
     initial_sol = model.make_trajectory(
         traj_length, resample=True, pts_per_period=pts_per_period, postprocess=False
     )
-    sample_inds = np.random.choice(
+    rng = np.random.default_rng(seed=seed)
+    sample_inds = rng.choice(
         np.arange(initial_sol.shape[0]), points_to_sample, replace=False
     )
     sample_pts = initial_sol[sample_inds]
